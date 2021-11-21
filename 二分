@@ -1,0 +1,31 @@
+```python
+class RangeFreqQuery(object):
+
+    def __init__(self, arr):
+        """
+        :type arr: List[int]
+        """
+        vs = {}
+        for i, v in enumerate(arr):
+            if v not in vs: vs[v]=[]
+            vs[v].append(i)
+        self.ix = vs
+
+
+    def query(self, left, right, value):
+        """
+        :type left: int
+        :type right: int
+        :type value: int
+        :rtype: int
+        """
+        if value not in self.ix: return 0
+        a = self.ix[value]
+        return bisect_right(a, right)-bisect_left(a, left)
+
+
+
+# Your RangeFreqQuery object will be instantiated and called as such:
+# obj = RangeFreqQuery(arr)
+# param_1 = obj.query(left,right,value)
+```
