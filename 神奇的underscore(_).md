@@ -32,6 +32,7 @@ class _Base: # private class
     def get_double_price(self):
         return self._double_price() 
 ```
+https://hackernoon.com/understanding-the-underscore-of-python-309d1a029edc
 + single_trailing_underscore: 避免和Python 的build-ins 和keywords 产生冲突。（其实很少用）
 
 ```python
