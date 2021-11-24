@@ -15,6 +15,7 @@
 y 是 down undersampled picture， 其中图中的花体F 指的是 矩阵/Psi，也就是basis
 我们得到一个under-determined system: y = C * x = C * /Phi * s = /Theta * s
 where y is measurement, s  which is solving for, is consistence with y
++ 随机采样
 
 4. code
 
