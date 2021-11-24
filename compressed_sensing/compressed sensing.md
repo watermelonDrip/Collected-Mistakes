@@ -21,3 +21,6 @@ where y is measurement, s  which is solving for, is consistence with y
 5. When it works:
 + incoherence: C to be incoherence  wrt.\Psi. In other words, C cannot be too parallel to /Psi. ( searching features)
 +
+
+
+6. 06年的东西，到现在已经十年了，已经发展出了很多算法，原来的基于l1 minimization的BP算法很慢，现在都是快速算法，而且求解算法也从纯优化方面扩展到了estimation方面，有很多基于贝叶斯估计的方法了，目前最火的也是Donoho他们组搞得AMP算法，是用Graph model里面的message passing算法通过近似求解MMSE（MAP）解。在测量矩阵方面，也已经设计出了各种矩阵，除了i.i.d. Gaussian的矩阵还有很多正交的矩阵，比如partial random DFT/DCT 矩阵。对信号的要求也从稀疏变成了存在某种结构，比如low rank，group sparse等等。
