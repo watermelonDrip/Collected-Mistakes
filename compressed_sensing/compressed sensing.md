@@ -17,3 +17,7 @@ y 是 down undersampled picture， 其中图中的花体F 指的是 矩阵/Psi�
 where y is measurement, s  which is solving for, is consistence with y
 
 4. code
+
+5. When it works:
++ incoherence: C to be incoherence  wrt.\Psi. In other words, C cannot be too parallel to /Psi. ( searching features)
++
