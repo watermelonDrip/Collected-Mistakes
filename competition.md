@@ -119,3 +119,62 @@ xi != yi
 1 <= timei <= 105
 1 <= firstPerson <= n - 1
 ```
+## 答案
+```python
+class UnionFind:
+    def __init__(self, n):
+        self.count = n
+        self.parent = [i for i in range(n)]
+        self.rank = [0] * n
+
+    def find(self, i):
+        if self.parent[i] != i:
+            self.parent[i] = self.find(self.parent[i])
+        return self.parent[i]
+
+    def union(self, x, y):
+        rootx = self.find(x)
+        rooty = self.find(y)
+        if rootx != rooty:
+            if self.rank[rootx] < self.rank[rooty]:
+                rootx, rooty = rooty, rootx
+            self.parent[rooty] = rootx
+            if self.rank[rootx] == self.rank[rooty]:
+                self.rank[rootx] += 1
+            self.count -= 1
+
+    def isolate(self, x):
+        self.parent[x] = x
+        self.rank[x] = 0
+
+
+class Solution:
+    def findAllPeople(self, n: int, meetings: List[List[int]], firstPerson: int) -> List[int]:
+
+        meetings.sort(key=lambda x: x[2])
+
+        uf = UnionFind(n)
+        uf.union(0, firstPerson)
+
+        for _, members in groupby(meetings, key=lambda x: x[2]):
+            members = list(members)
+
+            # 连接同一时间开会的专家
+            people = set()
+            for x, y, _ in members:
+                uf.union(x, y)
+                people.add(x)
+                people.add(y)
+
+            # 开完会后, 孤立所有没知道秘密的专家
+            for person in people:
+                if uf.find(person) != uf.find(0):
+                    uf.isolate(person)
+
+        ans = []
+        for i in range(n):
+            if uf.find(i) == uf.find(0):
+                ans.append(i)
+        return ans
+
+```
