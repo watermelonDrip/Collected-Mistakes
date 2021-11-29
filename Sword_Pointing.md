@@ -42,10 +42,7 @@ O(M+N)
 + 当 numbers[mid] > numbers[right]​ 时，说明最小值在 [mid, right]​ 区间中，则令 left = mid + 1，用于下一轮计算
 + 当 numbers[mid] == numbers[right]​ 时，无法判断最小值在哪个区间之中，此时让 right--，缩小区间范围，在下一轮进行判断
 + 为什么是 right-- 缩小范围，而不是 left++？
- 
- 因为数组是升序的，所以最小值一定靠近左侧，而不是右侧
-
-比如，当存在 [1,2,2,2,2] 这种情况时，left = 0，right = 4，mid = 2，数值满足 numbers[mid] == numbers[right] 这个条件，如果 left++，则找不到最小值
+    + 因为数组是升序的，所以最小值一定靠近左侧，而不是右侧。比如，当存在 [1,2,2,2,2] 这种情况时，left = 0，right = 4，mid = 2，数值满足 numbers[mid] == numbers[right] 这个条件，如果 left++，则找不到最小值
 
 ##
 ```python
