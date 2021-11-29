@@ -39,10 +39,12 @@ O(M+N)
 + 初始化下标 left 和 right
 + 计算中间下标 mid = (right + left) / 2​，这里的除法是取整运算，不能出现小数
 + 当 numbers[mid] < numbers[right] 时，说明最小值在 ​[left, mid]​ 区间中，则令 right = mid，用于下一轮计算
-当 numbers[mid] > numbers[right]​ 时，说明最小值在 [mid, right]​ 区间中，则令 left = mid + 1，用于下一轮计算
-当 numbers[mid] == numbers[right]​ 时，无法判断最小值在哪个区间之中，此时让 right--，缩小区间范围，在下一轮进行判断
-为什么是 right-- 缩小范围，而不是 left++？
-因为数组是升序的，所以最小值一定靠近左侧，而不是右侧
++ 当 numbers[mid] > numbers[right]​ 时，说明最小值在 [mid, right]​ 区间中，则令 left = mid + 1，用于下一轮计算
++ 当 numbers[mid] == numbers[right]​ 时，无法判断最小值在哪个区间之中，此时让 right--，缩小区间范围，在下一轮进行判断
++ 为什么是 right-- 缩小范围，而不是 left++？
+ 
+ 因为数组是升序的，所以最小值一定靠近左侧，而不是右侧
+
 比如，当存在 [1,2,2,2,2] 这种情况时，left = 0，right = 4，mid = 2，数值满足 numbers[mid] == numbers[right] 这个条件，如果 left++，则找不到最小值
 
 ##
@@ -57,7 +59,7 @@ class Solution:
                 left = mid +1
             elif numbers[mid] < numbers[right]: # 最小值可能是numbers[mid],因此范围改为[left,mid]中存在最小值
                 right = mid
-            else:                              #因为实际上，我们要在范围内，我们要保持数组是升序排序，所以，我们需要的最小数一定是靠左的，因此当numbers[mid] == numbers[right]，right-=1
+            else:  # 实际上，上两个条件，我们是要在范围内， 保持数组是升序排序，所以，我们需要的最小数一定是靠左的，因此当numbers[mid] == numbers[right]，right-=1
                 right-=1
         return numbers[left]
 ```
