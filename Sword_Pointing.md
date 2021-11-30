@@ -60,3 +60,45 @@ class Solution:
                 right-=1
         return numbers[left]
 ```
+## 剑指 Offer 29. 顺时针打印矩阵
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+### 
+```
+               top
+            1 1 1 1 1
+      left  1 1 1 1 1  right
+            1 1 1 1 1
+            1 1 1 1 1
+             bottom
+```
+
+### 
+```python
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix:
+            return []
+        res = list()
+        left,right = 0, len(matrix[0])-1
+        top,bottom = 0, len(matrix)-1
+        x = 0
+        while True:
+            for i in range(left,right+1): res.append(matrix[top][i])
+            top +=1
+            if top> bottom: break
+
+            for i in range(top,bottom+1): res.append(matrix[i][right])
+            right-=1
+            if left>right:break
+
+            for i in range(right,left-1,-1): res.append(matrix[bottom][i])
+            bottom-=1
+            if bottom<top: break
+
+            for i in range(bottom,top-1,-1): res.append(matrix[i][left])
+            left+=1
+            if left>right: break
+        return res
+```
+ 
