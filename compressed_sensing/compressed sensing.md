@@ -5,19 +5,26 @@
   where x :true signal , /Psi：universal basis,e.g. DFT， s:sparse 
   也就是把原始的信号表示到在其他basis 上的
   比如，jpeg就是用fast fourier transform basis, 也就是选了一个我们想要压缩的basis
+  这时x是像素的向量。x 可以表示一个图片比如一个猫咪
+  
 
 3.  compressed sensing
 + 如果我们只有5%的图片信息 ，我们可以恢复出原始的图片吗? 也就是说，我们现在有一个massively down sampled of image, 推断出稀疏向量s 来恢复出真实的图像吗？
 
 ![databook-pdf 11-23-2021 1-57-46 PM](https://user-images.githubusercontent.com/69283174/142965098-72057134-edaa-4e04-9c25-514825c645ac.png)
-
+从上面的图可以看出，我们一开始就得到的第一张图片是有不完整信息的图片(y)。 这个不完整的图片是通过完整图片上采样得到的。
+换句话说，比如真实的图片信息x假如说10000维度的，这时候我们的y可能是1000或者更小维度。
 
 y 是 down undersampled picture， 其中图中的花体F 指的是 矩阵/Psi，也就是basis
 我们得到一个under-determined system: y = C * x = C * /Phi * s = /Theta * s
-where y is measurement, s  which is solving for, is consistence with y
+where y is measurement, s  which is solving for, is consistence with y， x 和 s 表示相同的信息，因为他们只进行了一个变化。
 + 随机采样
 
-4. code
+ 
+<img src="https://user-images.githubusercontent.com/69283174/144697599-a690861e-ec1f-4111-b1e1-cf68d752bfeb.png" style="zoom:10%" />
+
+  
+C 相当于  x = /Psi * s  的矩阵中，抽出想要的列
 
 5. When it works:
 + incoherence: C to be incoherence  wrt.\Psi. In other words, C cannot be too parallel to /Psi. ( searching features)
