@@ -114,7 +114,7 @@ class Solution:
 
 输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
 
-https://excalidraw.com/#json=ejqYS52UNAEdw-JoPJvLZ,BYKGVFB67BLkDXBE6jU8Mg
+<!-- https://excalidraw.com/#json=ejqYS52UNAEdw-JoPJvLZ,BYKGVFB67BLkDXBE6jU8Mg -->
 ![image](https://user-images.githubusercontent.com/69283174/144213553-a751cc12-a90d-4709-8dc0-6e54fbbe5e8a.png)
 
 
