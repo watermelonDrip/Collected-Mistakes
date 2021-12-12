@@ -198,6 +198,10 @@ class Solution:
 - 向右移动到位置 6 ，摘到 3 个水果
 - 向右移动到位置 8 ，摘到 6 个水果
 移动 3 步，共摘到 3 + 6 = 9 个水果
+![image](https://user-images.githubusercontent.com/69283174/145699853-e1b6f574-3edd-4a3b-9cff-4d10421122fe.png)
+
+
+
 示例 2：
 
 
@@ -211,6 +215,9 @@ class Solution:
 - 向右移动到位置 6 ，摘到 2 个水果
 - 向右移动到位置 7 ，摘到 4 个水果
 移动 1 + 3 = 4 步，共摘到 7 + 1 + 2 + 4 = 14 个水果
+![image](https://user-images.githubusercontent.com/69283174/145699856-4d2b611b-04b7-4cca-883e-584bcb974fed.png)
+
+
 示例 3：
 
 
@@ -218,7 +225,8 @@ class Solution:
 输出：0
 解释：
 最多可以移动 k = 2 步，无法到达任一有水果的地方
- 
+![image](https://user-images.githubusercontent.com/69283174/145699858-422d44df-bd42-4436-bfc9-63a4cd440fe6.png)
+
 
 提示：
 
