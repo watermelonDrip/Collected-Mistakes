@@ -190,7 +190,7 @@ class Solution:
 
 示例 1：
 
-
+```
 输入：fruits = [[2,8],[6,3],[8,6]], startPos = 5, k = 4
 输出：9
 解释：
@@ -198,14 +198,14 @@ class Solution:
 - 向右移动到位置 6 ，摘到 3 个水果
 - 向右移动到位置 8 ，摘到 6 个水果
 移动 3 步，共摘到 3 + 6 = 9 个水果
-
+```
 ![image](https://user-images.githubusercontent.com/69283174/145699853-e1b6f574-3edd-4a3b-9cff-4d10421122fe.png)
 
 
 
 示例 2：
 
-
+```
 输入：fruits = [[0,9],[4,1],[5,7],[6,2],[7,4],[10,9]], startPos = 5, k = 4
 输出：14
 解释：
@@ -216,27 +216,27 @@ class Solution:
 - 向右移动到位置 6 ，摘到 2 个水果
 - 向右移动到位置 7 ，摘到 4 个水果
 移动 1 + 3 = 4 步，共摘到 7 + 1 + 2 + 4 = 14 个水果
-
+```
 ![image](https://user-images.githubusercontent.com/69283174/145699856-4d2b611b-04b7-4cca-883e-584bcb974fed.png)
 
 
 示例 3：
 
-
+```
 输入：fruits = [[0,3],[6,4],[8,5]], startPos = 3, k = 2
 输出：0
 解释：
 最多可以移动 k = 2 步，无法到达任一有水果的地方
-
+```
 ![image](https://user-images.githubusercontent.com/69283174/145699858-422d44df-bd42-4436-bfc9-63a4cd440fe6.png)
 
 
 提示：
-
+```
 1 <= fruits.length <= 105
 fruits[i].length == 2
 0 <= startPos, positioni <= 2 * 105
 对于任意 i > 0 ，positioni-1 < positioni 均成立（下标从 0 开始计数）
 1 <= amounti <= 104
 0 <= k <= 2 * 105
-
+```
