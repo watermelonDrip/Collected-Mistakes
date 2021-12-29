@@ -59,6 +59,8 @@ plt.show()
 现在是时候用 pytorch 编写我 解释过的所有内容了。为此，首先我们将使用以下语句创建三个变量：
 
 ```python
+import torch
+from torch.autograd import Variable
 W = Variable(torch.randn(1).uniform_(-1,1)) # Variables wrap a Tensor
 b =  Variable(torch.zeros([1]))
 x_data = np.array(x_data)
