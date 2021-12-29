@@ -59,17 +59,22 @@ plt.show()
 现在是时候用 pytorch 编写我 解释过的所有内容了。为此，首先我们将使用以下语句创建三个变量：
 
 ```python
-W = tf.Variable(tf.random_uniform([1], -1.0, 1.0))
-b = tf.Variable(tf.zeros([1]))
+W = Variable(torch.randn(1).uniform_(-1,1)) # Variables wrap a Tensor
+b =  Variable(torch.zeros([1]))
+x_data = np.array(x_data)
 y = W * x_data + b
 ```
 
 现在，我们可以继续前进，只知道方法`Variable`的调用定义了一个变量，驻留在 pytorch 的内部图数据结构中，我在上面已经说过了。 稍后我们将回到方法参数的更多信息，但是现在我认为最好继续前进来推进第一种方法。
 
-现在，通过定义这些变量，我们可以基于每个点与函数`y = W * x + b`计算的点之间的距离，来表示我们之前讨论的损失函数。之后，我们可以计算其平方和的平均值。 在 TensorFlow 中，此损失函数表示如下：
+现在，通过定义这些变量，我们可以基于每个点与函数`y = W * x + b`计算的点之间的距离，来表示我们之前讨论的损失函数。之后，我们可以计算其平方和的平均值。 在 pytorch 中，此损失函数表示如下：
 
 ```py
-loss = tf.reduce_mean(tf.square(y - y_data))
+loss = torch.nn.MSELoss()
+y = torch.tensor(y)
+y_data = torch.tensor(y_data)
+
+output = loss(y,y_data)
 ```
 
 如我们所见，此表达式计算我们知道的`y_data`点与从输入`x_data`计算的点`y`之间的平方距离的平均值。
@@ -80,7 +85,7 @@ loss = tf.reduce_mean(tf.square(y - y_data))
 
 算法从一组参数的初始值开始（在我们的例子中为`W`和`b`），然后算法以某种方式迭代地调整这些变量的值，在过程结束时，变量的值使成本函数最小。
 
-要在 TensorFlow 中使用此算法，我们只需执行以下两个语句：
+要在 pytorch 中使用此算法，我们只需执行以下两个语句：
 
 ```py
 optimizer = tf.train.GradientDescentOptimizer(0.5)
