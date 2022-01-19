@@ -124,6 +124,59 @@ def datingClassTest():
 + 准备数据：将图像格式转换为分类器使用的list
 + 分析数据
 + 训练算法：不适合knn
-+ 测试算法：
++ 测试算法：测试样本，预测样本。测试样本是已经完成分类的数据，如果预测不同，这记错。（一个预测样本跟所有的测试样本比较，而得到结果。所以训练器不用训练）
 
+2. 准备数据： 将图像转换为测试向量(将数据处理成分类器可以识别的格式）
+trainingDigits: 2000个例子 （每一个文件是一个数字）
+testDigits: 900个例子
+使用trainingDigits中来训练分类器，使用testDigits中数据来测试分类器。
+    + 将图像数据转换为向量
+    + :param filename: 图片文件 因为我们的输入数据的图片格式是 32 * 32的
+    + :return: 一维矩阵
+    + 该函数将图像转换为向量：该函数创建 1 * 1024 的NumPy数组，然后打开给定的文件，
+    + 循环读出文件的前32行，并将每行的头32个字符值存储在NumPy数组中，最后返回数组。
+```python
+def img2vector(filename):
+    returnVect = zeros((1, 1024))
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()
+        for j in range(32):
+            returnVect[0, 32 * i + j] = int(lineStr[j])
+    return returnVect
+```
+3. 测试算法： 使用knn
+将数据输入到分类器
+```python
+def handwritingClassTest():
+    # 1. 导入数据
+    hwLabels = []
+    trainingFileList = listdir('input/2.KNN/trainingDigits')  # load the training set
+    m = len(trainingFileList)
+    trainingMat = zeros((m, 1024))
+    # hwLabels存储0～9对应的index位置， trainingMat存放的每个位置对应的图片向量
+    for i in range(m):
+        fileNameStr = trainingFileList[i]
+        fileStr = fileNameStr.split('.')[0]  # take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        hwLabels.append(classNumStr)
+        # 将 32*32的矩阵->1*1024的矩阵
+        trainingMat[i, :] = img2vector('input/2.KNN/trainingDigits/%s' % fileNameStr)
+
+    # 2. 导入测试数据
+    testFileList = listdir('input/2.KNN/testDigits')  # iterate through the test set
+    errorCount = 0.0
+    mTest = len(testFileList)
+    for i in range(mTest):
+        fileNameStr = testFileList[i]
+        fileStr = fileNameStr.split('.')[0]  # take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        vectorUnderTest = img2vector('input/2.KNN/testDigits/%s' % fileNameStr)
+        classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 3)
+        print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr)
+        if (classifierResult != classNumStr): errorCount += 1.0
+    print "\nthe total number of errors is: %d" % errorCount
+    print "\nthe total error rate is: %f" % (errorCount / float(mTest))
+```
+ 
 
