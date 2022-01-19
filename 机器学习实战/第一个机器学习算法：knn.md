@@ -179,7 +179,10 @@ def handwritingClassTest():
     print "\nthe total error rate is: %f" % (errorCount / float(mTest))
 ```
 
-可以改变k的值，修改函数handwritingClassTest随机选取训练样本、改变训练样本数目，都会对knn错误率有影响。
+可以改变k的值，修改函数handwritingClassTest随机选取训练样本、改变训练样本数目，都会对knn错误率有影响
+
+# 总结
+![image](https://user-images.githubusercontent.com/69283174/150143860-40074c16-dcb0-4eab-8051-fb7f7e1dc236.png)
 
  
 
