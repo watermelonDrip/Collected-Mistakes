@@ -149,11 +149,11 @@ def img2vector(filename):
 将数据输入到分类器
 ```python
 def handwritingClassTest():
-    # 1. 导入数据
+    # 1. 导入数据，将trainingDigits目录中的文件内存存储再列表中
     hwLabels = []
-    trainingFileList = listdir('input/2.KNN/trainingDigits')  # load the training set
-    m = len(trainingFileList)
-    trainingMat = zeros((m, 1024))
+    trainingFileList = listdir('trainingDigits')  # load the training set
+    m = len(trainingFileList) #训练数据长度
+    trainingMat = zeros((m, 1024)) # 所有的测试样本都存在trainingMat 里，m行1024列
     # hwLabels存储0～9对应的index位置， trainingMat存放的每个位置对应的图片向量
     for i in range(m):
         fileNameStr = trainingFileList[i]
@@ -172,11 +172,14 @@ def handwritingClassTest():
         fileStr = fileNameStr.split('.')[0]  # take off .txt
         classNumStr = int(fileStr.split('_')[0])
         vectorUnderTest = img2vector('input/2.KNN/testDigits/%s' % fileNameStr)
-        classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 3)
+        classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 3)  
         print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr)
         if (classifierResult != classNumStr): errorCount += 1.0
     print "\nthe total number of errors is: %d" % errorCount
     print "\nthe total error rate is: %f" % (errorCount / float(mTest))
 ```
+
+可以改变k的值，修改函数handwritingClassTest随机选取训练样本、改变训练样本数目，都会对knn错误率有影响。
+
  
 
