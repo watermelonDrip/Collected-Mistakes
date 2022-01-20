@@ -194,9 +194,11 @@ myTree包含了很多代表树结果信息的嵌套字典，从左往右，第�
 
 ```python
 import matplotlib.pyplot as plt
+#定义文本框喝箭头格式
 decisionNode = dict(boxstyle = "sawtooth",fc = "0.8")
 leafNode = dict(boxstyle = "round4",fc = "0.8")
 arrow_args = dict(arrowstyle = "<-")
+#绘制带箭头的注释
 def plotNode(nodeTxt, centerPt, parentPt, nodeType):
     createPlot.ax1.annotate(nodeTxt, xy=parentPt,  xycoords='axes fraction', xytext=centerPt, textcoords='axes fraction', va="center", ha="center", bbox=nodeType, arrowprops=arrow_args)
 def createPlot(inTree):
@@ -211,7 +213,40 @@ def createPlot(inTree):
     plt.show()
 ```
 
+![image](https://user-images.githubusercontent.com/69283174/150350680-32833b93-eebd-41bf-932d-25dd8c958589.png)
 
+### 构造注解树
+接下来我们需要知道多少个叶节点，和树有多少层。 叶节点可以确定x轴长度。树层确定y高度。
+```python
+def getNumLeafs(myTree): # 遍历所有子节点
+    numLeafs = 0
+    firstStr = myTree.keys()[0] # 第一个关键字是第一次划分数据集的类别标签
+    secondDict = myTree[firstStr] # 
+    # 根节点开始遍历
+    for key in secondDict.keys():
+        # 判断子节点是否为dict, 不是+1
+        if type(secondDict[key]).__name__ == 'dict': # 判断是否是字典类型
+            numLeafs += getNumLeafs(secondDict[key])
+        else:
+            numLeafs += 1
+    return numLeafs
+
+def getTreeDepth(myTree):
+    maxDepth = 0
+    firstStr = myTree.keys()[0]  
+    secondDict = myTree[firstStr]
+    # 根节点开始遍历
+    for key in secondDict.keys():
+        # 判断子节点是不是dict, 求分枝的深度
+        if type(secondDict[key]).__name__ == 'dict':
+            thisDepth = 1 + getTreeDepth(secondDict[key])
+        else:
+            thisDepth = 1
+        # 记录最大的分支深度
+        if thisDepth > maxDepth:
+            maxDepth = thisDepth
+    return maxDepth
+```
 
 
 
