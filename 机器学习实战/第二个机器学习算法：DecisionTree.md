@@ -218,22 +218,25 @@ def createPlot(inTree):
 ### 构造注解树
 接下来我们需要知道多少个叶节点，和树有多少层。 叶节点可以确定x轴长度。树层确定y高度。
 ```python
-def getNumLeafs(myTree): # 遍历所有子节点
+def getNumLeafs(myTree):
     numLeafs = 0
-    firstStr = myTree.keys()[0] # 第一个关键字是第一次划分数据集的类别标签
-    secondDict = myTree[firstStr] # 
+     
+    firstStr = list(myTree.keys())[0] #注意在python3里，dict.keys() returns an iterable but not indexable object. The most simple (but not so efficient) solution would be:`vocab = list(fdist1.keys())`
+     
+    secondDict = myTree[firstStr]
     # 根节点开始遍历
     for key in secondDict.keys():
         # 判断子节点是否为dict, 不是+1
-        if type(secondDict[key]).__name__ == 'dict': # 判断是否是字典类型
+        if type(secondDict[key]).__name__ == 'dict':
             numLeafs += getNumLeafs(secondDict[key])
         else:
             numLeafs += 1
     return numLeafs
 
+
 def getTreeDepth(myTree):
     maxDepth = 0
-    firstStr = myTree.keys()[0]  
+    firstStr = list(myTree.keys())[0]
     secondDict = myTree[firstStr]
     # 根节点开始遍历
     for key in secondDict.keys():
