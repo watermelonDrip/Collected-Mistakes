@@ -52,7 +52,7 @@ def calcShannonEnt(dataSet):
         currentLabel = featVec[-1]
         if currentLabel not in labelCounts.keys():
             labelCounts[currentLabel]= 0
-            labelCounts[currentLabel]+=1
+        labelCounts[currentLabel]+=1
         shannonEnt = 0.0
     for key in labelCounts:
         prob = float(labelCounts[key])/numEntries
@@ -96,9 +96,102 @@ def splitDataSet(dataSet,index,value):
 5. 找到最好的特征划分方式
 接下来将遍历整个数据集，循环计算香农熵 和 `splitDataSet()`函数，找到最好的特征划分方式。
 熵计算会告诉我们如何划分数据集时最好的数据组织方式。
-
+```python
+def chooseBestFeatureTopSplit(dataSet):
+    numFeatures = len(dataSet[0])-1      # 有多少特征
+    baseEntropy = calcShannonEnt(dataSet) # 整个数据集的熵
+    bestInfoGain = 0.0; bestFeature = -1   # 最优的信息增益值, 和最优的Featurn编号
+    for i in range(numFeatures):
+        featList = [example[i] for example in dataSet] # 获取每一个实例的第i+1个feature，组成list集合
+        uniqueVals = set(featList)
+        newEntropy = 0.0     # 创建一个临时的信息熵
+        for value in uniqueVals:   # 遍历某一列的value集合，计算该列的信息熵 
+        # 遍历当前特征中的所有唯一属性值，对每个唯一属性值划分一次数据集，计算数据集的新熵值，
+        # 并对所有唯一特征值得到的熵求和
+            subDataSet = splitDataSet(dataSet,i,value)
+            prob = len(subDataSet)/float(len(dataSet))
+            newEntropy += prob * calcShannonEnt(subDataSet)
+        infoGain = baseEntropy - newEntropy
+        if (infoGain>bestInfoGain):
+            bestInfoGain = infoGain
+            bestFeature = i
+    return bestFeature
+```
             
 
+```
+chooseBestFeatureToSplit(myDat)
+```
+```
+featList= [1, 1, 1, 0, 0] #选取i=0列，
+subDataSet = [[1, 'yes'], [1, 'yes'], [0, 'no']] # i=0特征列表等于1，但是扣掉这一列的subdataset
+infoGain= 0.4199730940219749 bestFeature= 0 0.9709505944546686 0.5509775004326937
+featList=[1, 1, 0, 1, 1]
+subDataSet = [[1, 'yes'], [1, 'yes'], [0, 'no'], [0, 'no']]
+infoGain= 0.17095059445466854 bestFeature= 1 0.9709505944546686 0.8
+0
+```
+          
+可以看出，第0个特征是最好的用于划分数据集的特征。
+
+6. 递归构造决策树
+第一次划分之后，数据将向下传递。
+
+递归结束的条件： 程序遍历完所有划分数据集的属性，或者每个分支下的所有实例都具有相同的分类。
++ 如果数据集已经处理了所有属性，但是类标签依然不是唯一的，需要定义叶子节点。一般通常采用多数表决的方法。
+```python
+def majorityCnt(classList):
+    classCount = {}
+    for vote in classList:
+        if vote not in classCount.keys(): #存储每个类标签出现的频率
+            classCount[vote] = 0
+        classCount[vote] +=1
+        # 倒叙排列classCount得到一个字典集合，然后取出第一个就是结果（yes/no），即出现次数最多的结果（注意这里面的输出的不是特征flipper的那个）
+        sortedclassCount = sorted(classCount.iteritems(), key = operator.itemgetter(1), reverse = True)
+        return sortedclassCount[0][0]
+```
+这段代码类似于knn里面的投票表决代码。
+
+```
+def createTree(dataSet, labels): #dataSet数据集，labels标签列表
+    classList = [example[-1] for example in dataSet] # 第一次迭代的时候是，classlist ['yes', 'yes', 'no', 'no', 'no']
+    # 如果数据集的最后一列的第一个值出现的次数=整个集合的数量，也就说只有一个类别，就只直接返回结果就行
+    if classList.count(classList[0]) == len(classList):    # 第一个停止条件：所有的类标签完全相同，则直接返回该类标签。
+        return classList[0]
+    # 如果数据集只有1列，那么最初出现label次数最多的一类，作为结果
+    if len(dataSet[0]) == 1:     # 第二个停止条件：使用完了所有特征，仍然不能将数据集划分成仅包含唯一类别的分组。
+        return majorityCnt(classList)
+    # 选择最优的列，得到最优列对应的label含义
+    bestFeat = chooseBestFeatureToSplit(dataSet) #第一迭代 bestFeat = 0
+    # 获取label的名称
+    bestFeatLabel = labels[bestFeat] # bestFeatLabel: no surfacing
+    # 初始化myTree
+    myTree = {bestFeatLabel: {}}
+    # 注：labels列表是可变对象，在PYTHON函数中作为参数时传址引用，能够被全局修改
+    # 所以这行代码导致函数外的同名变量被删除了元素，造成例句无法执行，提示'no surfacing' is not in list
+    del(labels[bestFeat])
+    # 取出最优列，然后它的branch做分类
+    featValues = [example[bestFeat] for example in dataSet]
+    uniqueVals = set(featValues)
+    for value in uniqueVals:
+        # 求出剩余的标签label
+        subLabels = labels[:]
+        # 遍历当前选择特征包含的所有属性值，在每个数据集划分上递归调用函数createTree()
+        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)
+        # print 'myTree', value, myTree
+    return myTree
+```
+output:
+```
+myTree = {'no surfacing': {0: 'no', 1: {'flippers': {0: 'no', 1: 'yes'}}}}
+```
+myTree包含了很多代表树结果信息的嵌套字典，从左往右，第一个关键字 'no surfacing'是第一个划分数据集的特征名称，
+该关键字的值也是另一个数据字典。第二个关键字是'no surfacing'特征划分的数据集，这些关键字的值是'no surfacing'节点的子节点。
+如果值是另一个数据字典比如 ` 1: {'flippers': {0: 'no', 1: 'yes'}}`，子节点上一个判断节点。
+
+### 使用Matplotlib注解绘制树形图
+决策树的主要优点就是直观易于理解。 使用Matplotlib库来创建树形图。
+ 
 
 
 
