@@ -77,21 +77,26 @@ def createDataSet():
 
 4. 划分数据集
 将对每个特征划分数据集的结果计算一次信息熵，然后判断按照哪个特征划分数据集是最好的划分方式。      
-
+当我们按照某个特征划分数据集时，需要将所有符合要求的元素抽取出来。
 ```python
 # dataSet带划分数据集
-# axis划分数据集的特征
+# index 划分数据集的特征，选取myDat的那一列
 # value 特征返回值
-def splitDataSet(dataSet,axis,value):
+def splitDataSet(dataSet,index,value):
     retDataSet = []
     for featVect in dataSet:  
-        if featVect[axis] == value: #符合特征的抽出来
-        
-            reducedFeatVec = featVect[:axis]
-            reducedFeatVec.extend(featVect[axis+1,:])
+        if featVect[index] == value: # 判断index列的值是否为value, index列表示的是哪个特征，'no surfacing'还是 'flippers'。
+            reducedFeatVec = featVect[:index]  # chop out index used for splitting
+            reducedFeatVec.extend(featVect[index+1,:])
+            # [index+1:]表示从跳过 index 的 index+1行，取接下来的数据
+            # 收集结果值 index列为value的行【该行需要排除index列】
             retDataSet.append(reducedFeatVec)
     return retDataSet
 ```
+5. 找到最好的特征划分方式
+接下来将遍历整个数据集，循环计算香农熵 和 `splitDataSet()`函数，找到最好的特征划分方式。
+熵计算会告诉我们如何划分数据集时最好的数据组织方式。
+
             
 
 
