@@ -171,6 +171,41 @@ plotBestFit(w)
 
 ![image](https://user-images.githubusercontent.com/69283174/150992416-21a781a7-c594-4a48-8acb-39a197103629.png)
 
+改进随机梯度上升算法
+
+```python
+def stocGradAscent1(dataMatrix, classLabels, numIter=150):
+    '''
+    Desc:
+        改进版的随机梯度上升，使用随机的一个样本来更新回归系数
+    Args:
+        dataMatrix -- 输入数据的数据特征（除去最后一列数据）
+        classLabels -- 输入数据的类别标签（最后一列数据）
+        numIter=150 --  迭代次数
+    Returns:
+        weights -- 得到的最佳回归系数
+    '''
+    m,n = shape(dataMatrix)
+    weights = ones(n)   # 创建与列数相同的矩阵的系数矩阵，所有的元素都是1
+    # 随机梯度, 循环150,观察是否收敛
+    for j in range(numIter):
+        # [0, 1, 2 .. m-1]
+        dataIndex = [ i for i in range(m)]
+        for i in range(m):
+            # i和j的不断增大，导致alpha的值不断减少，但是不为0
+            alpha = 4/(1.0+j+i)+0.0001    # alpha 会随着迭代不断减小，但永远不会减小到0，因为后边还有一个常数项0.0001
+            # 随机产生一个 0～len()之间的一个值
+            # random.uniform(x, y) 方法将随机生成下一个实数，它在[x,y]范围内,x是这个范围内的最小值，y是这个范围内的最大值。
+            randIndex = int(random.uniform(0,len(dataIndex)))
+            # sum(dataMatrix[i]*weights)为了求 f(x)的值， f(x)=a1*x1+b2*x2+..+nn*xn
+            h = sigmoid(sum(dataMatrix[randIndex]*weights))
+            error = classLabels[randIndex] - h
+            # print weights, '__h=%s' % h, '__'*20, alpha, '__'*20, error, '__'*20, dataMatrix[randIndex]
+            weights = weights + alpha * error * dataMatrix[randIndex]
+            del(dataIndex[randIndex])
+    return weights
+ ```
+ ![image](https://user-images.githubusercontent.com/69283174/150994849-417420c5-acb9-4277-bf26-1f60ba48a566.png)
 
 
 
