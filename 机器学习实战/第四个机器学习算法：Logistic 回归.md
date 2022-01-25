@@ -138,10 +138,38 @@ def plotBestFit(wei):
     
 ## 训练算法：随机梯度上升
 
-梯度上升算法在每次更新回归系数时，需要遍历整个数据集，复杂度太高。一种改进方法是一次仅用一个样本点来更新。
+梯度上升算法在每次更新回归系数时，需要遍历整个数据集，复杂度太高。一种改进方法是一次仅用一个样本点来更新系数，该方法称为随机梯度上升算法。
 
+随机梯度上升伪代码：
+```
+每个回归系数初始化为1
+对数据集中每个样本
+    计算样本的梯度
+    使用alpha ✖️ gradient 更新回归系数的向量
+返回回归系数
+```
 
+代码如下：
+```python
+def stocGradAscent0(dataMatrix, classLabels):
+    m,n = shape(dataMatrix)
+    alpha = 0.01
+    weights = ones(n)
+    for i in range(m):
+        h = sigmoid(sum(dataMatrix[i]*weights) )   # 矩阵乘法
+        error =  classLabels[i] - h               # 向量相减
+    
+        weights = weights +  (alpha*dataMatrix[i]*error)
+    return array(weights)
+```
 
+output:
+```
+w = stocGradAscent0(array(dataArr), labelMat)
+plotBestFit(w)
+```
+
+![image](https://user-images.githubusercontent.com/69283174/150992416-21a781a7-c594-4a48-8acb-39a197103629.png)
 
 
 
