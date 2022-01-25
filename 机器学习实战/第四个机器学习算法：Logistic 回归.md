@@ -92,9 +92,10 @@ def gradAscent(dataMatIn, classLabels):
         t = alpha*tmp
         weights = weights +  (alpha*tmp)
     return array(weights)
-
 ```
+
 output:
+
 ```
 dataArr,labelMat = loadDataSet('TestSet.txt')
 gradAscent(dataArr, labelMat)
@@ -133,10 +134,11 @@ def plotBestFit(wei):
     plt.xlabel('X'); plt.ylabel('Y')
     plt.show()
 ```
-    
- 
-    
 
+    
+## 训练算法：随机梯度上升
+
+梯度上升算法在每次更新回归系数时，需要遍历整个数据集，复杂度太高。一种改进方法是一次仅用一个样本点来更新。
 
 
 
