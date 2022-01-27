@@ -230,6 +230,75 @@ def stocGradAscent1(dataMatrix, classLabels, numIter=150):
 + 使用有相似样本的均值添补缺失值；
 + 使用另外的机器学习算法预测缺失值
 
+2. 测试算法：用Logistic回归进行分类
+
+用Logistic回归方法进行分类并不需要很多工作，需要做的只是把测试集上的每个特征向量乘以最优化方法得来的回归系数，
+再将该乘积结果求和，最后输入到Sigmoid函数中即可。 对应的Sigmoid结果大于0.5，判断1，否则0.
+
+```python
+
+def classifyVector(inX,weights): # 以回归向量和特征
+    prob = sigmoid(sum(inX*weights))
+    if prob>0.5: return 1.0
+    else: return 0.0
+    
+def colicTest(): 
+    frTrain = open('input/5.Logistic/horseColicTraining.txt') # 打开测试集
+    frTest = open('input/5.Logistic/horseColicTest.txt')      # 打开训练集
+    trainingSet, trainingLabels = [],[]
+    # 解析训练数据中的数据特征和label
+    # trainingSet 中存储训练数据集的特征，trainingLabels 存储训练数据集的样本对应的分类标签
+    for line in frTrain.readlines():
+        currLine = line.strip().split('\t')
+        lineArr = []
+        for i in range(21): #前21个数据是特征 
+            lineArr.append(float(currLine[i]))
+        trainingSet.append(lineArr)
+        trainingLabels.append(float(currLine[21])) #第22个是标签
+    # 使用 改进后的 随机梯度下降算法 求得在此数据集上的最佳回归系数 trainWeights
+    trainWeights = stocGradAscent1(array(trainingSet), trainingLabels, 500)
+    errorCount,numTestVec = 0, 0.0
+    # 读取测试数据集进行测试，计算分类错误的样本条数和最终的错误率
+    for line in frTest.readlines():
+        numTestVec += 1.0
+        currLine = line.strip().split('\t')
+        lineArr = []
+        for i in range(21):
+            lineArr.append(float(currLine[i]))
+        if int(classifyVector(array(lineArr), trainWeights)) != int(currLine[21]):
+            errorCount += 1
+    errorRate = (float(errorCount) / numTestVec)
+    print （"the error rate of this test is", errorRate）
+    return errorRate
+def multiTest():
+    numTests = 10
+    errorSum = 0.0
+    for k in range(numTests):
+        errorSum += colicTest()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
