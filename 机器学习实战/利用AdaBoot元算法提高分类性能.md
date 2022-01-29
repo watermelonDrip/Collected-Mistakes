@@ -213,7 +213,68 @@ split: dim 1, thresh 2.10, thresh ineqal: gt, the weighted error is 0.400
 
 # 完整的AdaBoost算法
 
-上面我们构建了一个基于加权输入值进行决策的分类器。
+上面我们构建了一个基于加权输入值进行决策的分类器。 
+伪代码：
+```python
+对每次迭代：
+    利用buildStump()函数找到最佳的单层决策树
+    将最佳单层决策树加入到单层决策树组
+    计算alpha
+    计算新的权重向量量D
+    更新累计类别估计值
+    如果错误率等于0.0,退出
+```
+
+```python
+def adaBoostTrainDS(dataArr, labelArr, numIt=40):
+    """adaBoostTrainDS(adaBoost训练过程放大)
+    Args:
+        dataArr   特征标签集合
+        labelArr  分类标签集合
+        numIt     实例数
+    Returns:
+        weakClassArr  弱分类器的集合
+        aggClassEst   预测的分类结果值
+    """
+    weakClassArr = []
+    m = shape(dataArr)[0]
+    # 初始化 D，设置每个样本的权重值，平均分为m份
+    D = mat(ones((m, 1))/m)
+    aggClassEst = mat(zeros((m, 1)))
+    for i in range(numIt):
+        # 得到决策树的模型
+        bestStump, error, classEst = buildStump(dataArr, labelArr, D)
+
+        # alpha目的主要是计算每一个分类器实例的权重(组合就是分类结果)
+        # 计算每个分类器的alpha权重值
+        alpha = float(0.5*log((1.0-error)/max(error, 1e-16)))
+        bestStump['alpha'] = alpha
+        # store Stump Params in Array
+        weakClassArr.append(bestStump)
+
+        print "alpha=%s, classEst=%s, bestStump=%s, error=%s " % (alpha, classEst.T, bestStump, error)
+        # 分类正确: 乘积为1，不会影响结果，-1主要是下面求e的-alpha次方
+        # 分类错误: 乘积为 -1，结果会受影响，所以也乘以 -1
+        expon = multiply(-1*alpha*mat(labelArr).T, classEst)
+        print '(-1取反)预测值expon=', expon.T
+        # 计算e的expon次方，然后计算得到一个综合的概率的值
+        # 结果发现:  判断错误的样本，D中相对应的样本权重值会变大。
+        D = multiply(D, exp(expon))
+        D = D/D.sum()
+
+        # 预测的分类结果值，在上一轮结果的基础上，进行加和操作
+        print '当前的分类结果: ', alpha*classEst.T
+        aggClassEst += alpha*classEst
+        print "叠加后的分类结果aggClassEst: ", aggClassEst.T
+        # sign 判断正为1， 0为0， 负为-1，通过最终加和的权重值，判断符号。
+        # 结果为: 错误的样本标签集合，因为是 !=,那么结果就是0 正, 1 负
+        aggErrors = multiply(sign(aggClassEst) != mat(labelArr).T, ones((m, 1)))
+        errorRate = aggErrors.sum()/m
+        # print "total error=%s " % (errorRate)
+        if errorRate == 0.0:
+            break
+    return weakClassArr, aggClassEst
+```
 
 
 
