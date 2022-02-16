@@ -120,3 +120,62 @@ class Solution:
 
 ### 
 
+# 双指针
+
+## 剑指 Offer 57.1 和为s的两个数字
+
+在递增数组里找一对和为s的数字。
+
+```
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        left = 0
+        right = len(nums)-1
+        while left<right:
+            if nums[left]+ nums[right]>target:
+                right-=1
+            elif nums[left] + nums[right] < target:
+                left+=1
+            else:
+                return [nums[left],nums[right]]
+```
+
+
+## 剑指 Offer 57.2 和为s的两个数字
+
+输出所有和为 S 的连续正数序列。  (左右端点）
+
+模版：
+```python
+l,r = 0,n-1
+while l <r:
+    if (找到了):
+        return value
+    if condition1:
+        l+=1
+    else:
+        r-=1
+```
+
+```python
+class Solution:
+    def findContinuousSequence(self, target: int) -> List[List[int]]:
+        l,r,s = 1,2,3
+        res = list()
+        while l < r:
+            if s == target:
+                res.append(list(range(l,r+1)))
+            if s>=target:
+                s-=l
+                l+=1
+            else:
+                r+=1
+                s+=r
+        return res
+```
+T：O(n)
+S: O(1)
+
+
+
+
