@@ -176,6 +176,17 @@ class Solution:
 T：O(n)
 S: O(1)
 
+## 剑指 Offer 58 翻转单词顺序
 
-
-
+```python
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        s = s.strip() # 移除字符串头尾指定字符
+        strs = s.split() # 通过指定分隔符对字符进行切片
+        strs.reverse() # 方向列表中的元素
+        return ' '.join(strs) # 序列中的字符以指定的字符链接成一个新的字符
+```
+split()： O(n)
+strip(): O(n)
+join(): O(n)
+reverse: O(n)
